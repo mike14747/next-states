@@ -2,16 +2,22 @@ const db = require('../../../lib/db');
 const SQL = require('sql-template-strings');
 
 module.exports = async (req, res) => {
-    if (req.method !== 'GET') return res.status(401).json({ message: 'Only the GET method is allowed!' });
+    if (req.method !== 'GET') return res.status(401).end();
     let page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 9;
     if (page < 1) page = 1;
 
-    const states = await db.query(SQL`SELECT id, state_name, abbrev, capital FROM states ORDER BY id LIMIT ${(page - 1) * limit}, ${limit}`);
-    const count = await db.query(SQL`SELECT COUNT(*) AS statesCount FROM states`);
+    try {
+        const states = await db.query(SQL`SELECT id, state_name, abbrev, capital FROM states ORDER BY id LIMIT ${(page - 1) * limit}, ${limit}`);
+        const count = await db.query(SQL`SELECT COUNT(*) AS statesCount FROM states`);
 
-    const { statesCount } = count[0];
-    const pageCount = Math.ceil(statesCount / limit);
+        if (states.error || count.error) return res.status(500).end();
 
-    res.status(200).json({ states, pageCount, page });
+        const { statesCount } = count[0];
+        const pageCount = Math.ceil(statesCount / limit);
+
+        res.status(200).json({ states, pageCount, page });
+    } catch (error) {
+        res.status(500).end();
+    }
 };
