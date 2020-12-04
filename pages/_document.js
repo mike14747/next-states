@@ -5,7 +5,6 @@ class MyDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
-                    {/* <meta http-equiv="Content-Security-Policy" content="default-src 'self'" /> */}
                     <link rel="icon" href="data:," />
                 </Head>
                 <body>
