@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import Header from '../components/header';
 import Footer from '../components/footer';
 
-import '../css/my_style.css';
-import '../css/styles.css';
+import '../styles/my_style.css';
+import '../styles/styles.css';
 
 function MyApp({ Component, pageProps }) {
     return (
