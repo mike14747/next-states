@@ -44,6 +44,7 @@ export async function getServerSideProps({ req, query }) {
     const host = req.headers['x-forwarded-host'] || req.headers.host;
 
     const response = await fetch(`${protocol}://${host}/api/states/${query.id}`);
+    console.log('response:', response);
     if (response.ok) {
         const data = await response.json();
         return { props: data };
